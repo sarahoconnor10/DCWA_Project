@@ -1,15 +1,7 @@
 /*
 DCWA PROJECT 2024
 Reqs:
-  - run on port 3004
   - Handle HTTP routes + methods:
-    - GET / 
-        - home page
-        - <h1> student number 
-        - 3 links
-          - Students page
-          - Grades Page
-          - Lecturers Page
     - GET /students
         - students page
         - <h1> Students
@@ -91,9 +83,14 @@ Reqs:
 
 var express = require("express");
 var app = express();
-let ejs = require("ejs");
-app.set('view engine', 'ejs');
+var ejs = require("ejs");
+var pmysql = require("promise-mysql");
 var mySQLDao = require("./mySQLDao"); 
+var bodyParser = require('body-parser');
+var { check, validationResult } = require('express-validator');
+
+app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.listen(3004, () => {
     console.log("running on port 3004");
@@ -102,3 +99,15 @@ app.listen(3004, () => {
 app.get("/", (req, res) => {
     res.render("home");
 });
+
+/** COMPLETED TASKS
+  - run on port 3004
+  - GET / 
+        - home page
+        - <h1> student number 
+        - 3 links
+          - Students page
+          - Grades Page
+          - Lecturers Page
+ * 
+ */
