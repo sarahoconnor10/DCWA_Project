@@ -100,7 +100,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/students", (req, res) => {
-
+  res.render("students");
 });
 
 app.get("/students/edit/:sid", (req, res) => {
@@ -112,7 +112,7 @@ app.post("/students/edit/:sid", (req, res) => {
 });
 
 app.get("/students/add", (req, res) => {
-  
+  res.render("addStudent");
 });
 
 app.post("/students/add", (req, res) => {
