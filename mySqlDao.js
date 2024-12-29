@@ -5,7 +5,7 @@ pmysql.createPool({
     host : 'localhost',
     user : 'root',
     password : 'root',
-    database : 'studentdb4'
+    database : 'proj2024mysql'
     })
     .then(p => {
         pool = p
@@ -15,9 +15,15 @@ pmysql.createPool({
    });
 
 var getStudents = function() {
-    //return new promise 
-        //select * from students
-            // resolve or reject
+    return new Promise((resolve, reject) => {
+        pool.query('select * from student order by sid asc')
+            .then((data) => {
+                resolve(data);
+            })
+            .catch((error) => {
+                reject(error);
+            })
+    })
 }
 
 module.exports = {getStudents};

@@ -2,17 +2,6 @@
 DCWA PROJECT 2024
 Reqs:
   - Handle HTTP routes + methods:
-    - GET /students
-        - students page
-        - <h1> Students
-        - 3 elements
-          - Add student link
-          - Home link
-          - Student table
-            - displays student details
-              - Student ID, name, age
-              - Update option
-            - Alphabetical order by student id
     - GET and POST /students/edit/:sid
         - Update student page
         - <h1> Update student
@@ -100,7 +89,14 @@ app.get("/", (req, res) => {
 });
 
 app.get("/students", (req, res) => {
-  res.render("students");
+  mySQLDao
+    .getStudents()
+    .then((data) => {
+      res.render("students", { students: data});
+    })
+    .catch((error) => {
+      res.send(error);
+    })
 });
 
 app.get("/students/edit/:sid", (req, res) => {
@@ -140,5 +136,17 @@ app.get("/lecturers/delete/:lid", (req, res) => {
           - Students page
           - Grades Page
           - Lecturers Page
+  - GET /students
+        - students page
+        - <h1> Students
+        - 3 elements
+          - Add student link
+          - Home link
+          - Student table
+            - displays student details
+              - Student ID, name, age
+              - Update option
+            - Alphabetical order by student id
+    
  * 
  */
