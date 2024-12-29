@@ -91,11 +91,14 @@ Reqs:
 
 var express = require("express");
 var app = express();
+let ejs = require("ejs");
+app.set('view engine', 'ejs');
+var mySQLDao = require("./mySQLDao"); 
 
 app.listen(3004, () => {
     console.log("running on port 3004");
   });
 
 app.get("/", (req, res) => {
-    res.send("hello world");
+    res.render("home");
 });
