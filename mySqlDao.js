@@ -12,5 +12,12 @@ pmysql.createPool({
     })
     .catch(e => {
         console.log("pool error:" + e)
-   })
+   });
 
+var getStudents = function() {
+    //return new promise 
+        //select * from students
+            // resolve or reject
+}
+
+module.exports = {getStudents};
