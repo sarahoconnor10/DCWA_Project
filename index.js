@@ -84,7 +84,6 @@ Reqs:
 var express = require("express");
 var app = express();
 var ejs = require("ejs");
-var pmysql = require("promise-mysql");
 var mySQLDao = require("./mySQLDao"); 
 var bodyParser = require('body-parser');
 var { check, validationResult } = require('express-validator');
@@ -98,6 +97,38 @@ app.listen(3004, () => {
 
 app.get("/", (req, res) => {
     res.render("home");
+});
+
+app.get("/students", (req, res) => {
+
+});
+
+app.get("/students/edit/:sid", (req, res) => {
+  
+});
+
+app.post("/students/edit/:sid", (req, res) => {
+  
+});
+
+app.get("/students/add", (req, res) => {
+  
+});
+
+app.post("/students/add", (req, res) => {
+  
+});
+
+app.get("/grades", (req, res) => {
+  
+});
+
+app.get("/lecturers", (req, res) => {
+  
+});
+
+app.get("/lecturers/delete/:lid", (req, res) => {
+  
 });
 
 /** COMPLETED TASKS
