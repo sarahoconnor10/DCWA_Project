@@ -15,17 +15,7 @@ TO DO LIST
             - age > 18
           - if invalid input
             - page returned with error messages 
-            - invalid data is not entered into db
-    - GET /lecturers/delete/:lid
-        - when 'delete' is clicked on lecturer's page
-        - if lecturer does not teach modules
-          - can be deleted
-          - return to lecturers page
-        - else
-          - display error message page 
-          - <h1> Error message
-          - <h2> cannot delete lecturer <lid>. 
-          - do not delete from db     
+            - invalid data is not entered into db   
 */
 
 var express = require("express");
@@ -260,14 +250,24 @@ app.get("/lecturers/delete/:lid", (req, res) => {
             - if a student has > 1 modules
               - order by ascending grades
     - GET /lecturers
-          - lecturers page (mongoDB)
-          - <h1> Lecturers
-          - Link to home page
-          - table display for each lecturer
-            - Lecturer id
-            - name
-            - department id
-            - action - delete
-            - displayed in alphabetical order by lecturer id
+        - lecturers page (mongoDB)
+        - <h1> Lecturers
+        - Link to home page
+        - table display for each lecturer
+          - Lecturer id
+          - name
+          - department id
+          - action - delete
+          - displayed in alphabetical order by lecturer id
+    - GET /lecturers/delete/:lid
+        - when 'delete' is clicked on lecturer's page
+        - if lecturer does not teach modules
+          - can be deleted
+          - return to lecturers page
+        - else
+          - display error message page 
+          - <h1> Error message
+          - <h2> cannot delete lecturer <lid>. 
+          - do not delete from db  
 
  */

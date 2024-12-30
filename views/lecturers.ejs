@@ -1,27 +1,44 @@
-<h1>Lecturers</h1>
-<hr>
-<a href="/">Home</a>
-<hr><br>
+<html>
+  <head>
+    <style>
+      table {
+        width: 80%;
+        margin: 20px auto;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Lecturers</h1>
+    <hr />
+    <a href="/">Home</a>
+    <hr />
+    <br />
 
-<% if (typeof error !== 'undefined' && error) { %>
-    <div style="color: red; margin: 10px 0;">
-        <%= error %>
-    </div>
-<% } %>
+    <% if (typeof error !== 'undefined' && error) { %>
+    <div style="color: red; margin: 10px 0"><%= error %></div>
+    <% } %>
 
-<table>
-    <tr>
+    <table>
+      <tr>
         <th>Lecturer ID</th>
         <th>Name</th>
         <th>Department ID</th>
         <th>Action</th>
-    </tr>
-    <% lecturers.forEach((lecturer) => { %>
-    <tr>
+      </tr>
+      <% lecturers.forEach((lecturer) => { %>
+      <tr>
         <td><%= lecturer._id %></td>
         <td><%= lecturer.name %></td>
         <td><%= lecturer.did %></td>
         <td><a href="/lecturers/delete/<%= lecturer._id %>">Delete</a></td>
-    </tr>
-    <% }) %>
-</table>
+      </tr>
+      <% }) %>
+    </table>
+  </body>
+</html>

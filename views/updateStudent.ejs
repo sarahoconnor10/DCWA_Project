@@ -1,18 +1,44 @@
-<h1>Update Student <%= student.sid %> </h1>
-<hr />
-<a href="/">Home</a><br />
-<hr />
-<div>
-    <form action="/students/edit/<%= student.sid %>" method="POST">
-        <label for="sid">Student ID</label>
-        <input type="text" id="sid" name="sid" value="<%= student.sid %>" disabled/><br />
-        
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" value="<%= student.name %>"/><br />
-        
-        <label for="age">Age</label>
-        <input type="number" id="age" name="age" value="<%= student.age %>"/><br />
-        
-        <input type="submit" value="Update" />
-    </form>
-</div>
+<html>
+<head>
+    <style>
+
+        .container {
+            max-width: 200px;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Update Student </h1>
+    <hr />
+    <a href="/">Home</a><br />
+    <hr />
+    <div class="container">
+        <form action="/students/edit/<%= student.sid %>" method="POST">
+            <label for="sid">Student ID</label>
+            <input type="text" id="sid" name="sid" value="<%= student.sid %>" disabled/><br />
+            
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" value="<%= student.name %>"/><br />
+            
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" value="<%= student.age %>"/><br />
+            
+            <input type="submit" value="Update" />
+        </form>
+    </div>
+</body>
+</html>
