@@ -99,8 +99,15 @@ app.get("/students", (req, res) => {
     })
 });
 
-app.get("/students/edit/:sid", (req, res) => {
-  
+app.get("/students/update/:sid", (req, res) => {
+  mySQLDao
+    .getStudent(req.params.sid)
+    .then((data) => {
+      res.render("updateStudent", {student: data[0]});
+    })
+    .catch((error) => {
+      res.send(error);
+    })
 });
 
 app.post("/students/edit/:sid", (req, res) => {

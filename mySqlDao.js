@@ -26,4 +26,36 @@ var getStudents = function() {
     })
 }
 
-module.exports = {getStudents};
+var getStudent = function(sid) {
+    return new Promise((resolve, reject) => {
+        var myQuery = {
+            sql: "SELECT * from student where sid = ?",
+            values: [sid]
+        };
+        pool.query(myQuery)
+            .then((data) => {
+                resolve(data);
+            })
+            .catch((error) => {
+                reject(error);
+            })
+    })
+}
+
+var updateStudent = function(sid, name, age) {
+    return new Promise((resolve, reject) => {
+        var myQuery = {
+            sql: "UPDATE student name = ?, age = ? WHERE sid = ?",
+            values: [name, age, sid]
+        };
+        pool.query(myQuery)
+            .then(() => {
+                resolve();
+            })
+            .catch((error) => {
+                reject(error);
+            })
+    })
+}
+
+module.exports = {getStudents, getStudent, updateStudent};
