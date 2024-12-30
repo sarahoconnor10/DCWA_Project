@@ -45,7 +45,7 @@ var getStudent = function(sid) {
 var updateStudent = function(sid, name, age) {
     return new Promise((resolve, reject) => {
         var myQuery = {
-            sql: "UPDATE student name = ?, age = ? WHERE sid = ?",
+            sql: "UPDATE student SET name = ?, age = ? WHERE sid = ?",
             values: [name, age, sid]
         };
         pool.query(myQuery)
@@ -58,4 +58,20 @@ var updateStudent = function(sid, name, age) {
     })
 }
 
-module.exports = {getStudents, getStudent, updateStudent};
+var addStudent = function(sid, name, age) {
+    return new Promise((resolve, reject) => {
+        var myQuery = {
+            sql: "INSERT INTO student VALUES (?, ?, ?)",
+            values: [sid, name, age]
+        };
+        pool.query(myQuery)
+            .then(() => {
+                resolve();
+            })
+            .catch((error) => {
+                reject(error);
+            })
+    })
+}
+
+module.exports = {getStudents, getStudent, updateStudent, addStudent};

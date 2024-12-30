@@ -1,30 +1,13 @@
 /*
 DCWA PROJECT 2024
 Reqs:
+TO DO LIST
   - Handle HTTP routes + methods:
     - GET and POST /students/edit/:sid
-        - Update student page
-        - <h1> Update student
-        - link to home page
-        - 3 inputs 
-          - Student ID (NOT editable)
-          - name (min 2 chars)
-          - age (> 18)
-        - 'add' button
           - if invalid input 
             - error messages are displayed
             - invalid data is not entered into db
-          - if valid input
-            - redirect to students page
     - GET and POST /students/add
-        - Add student page
-        - <h1> Add student
-        - Link to home page
-        - 3 input fields
-          - student id
-          - name
-          - age
-        - 'add' button
           - validate data
             - student id length == 4
             - student id must be unique
@@ -33,8 +16,6 @@ Reqs:
           - if invalid input
             - page returned with error messages 
             - invalid data is not entered into db
-          - if valid input
-            - return to students page
     - GET /grades
         - Grades page
         - <h1> Grades
@@ -73,66 +54,138 @@ Reqs:
 var express = require("express");
 var app = express();
 var ejs = require("ejs");
-var mySQLDao = require("./mySQLDao"); 
-var bodyParser = require('body-parser');
-var { check, validationResult } = require('express-validator');
+var mySQLDao = require("./mySQLDao");
+var bodyParser = require("body-parser");
+var { check, validationResult } = require("express-validator");
 
-app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({extended: false}));
+app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.listen(3004, () => {
-    console.log("running on port 3004");
-  });
+  console.log("running on port 3004");
+});
 
 app.get("/", (req, res) => {
-    res.render("home");
+  res.render("home");
 });
 
 app.get("/students", (req, res) => {
   mySQLDao
     .getStudents()
     .then((data) => {
-      res.render("students", { students: data});
+      res.render("students", { students: data });
     })
     .catch((error) => {
       res.send(error);
-    })
+    });
 });
 
-app.get("/students/update/:sid", (req, res) => {
+app.get("/students/edit/:sid", (req, res) => {
   mySQLDao
     .getStudent(req.params.sid)
     .then((data) => {
-      res.render("updateStudent", {student: data[0]});
+      res.render("updateStudent", { student: data[0] });
     })
     .catch((error) => {
       res.send(error);
-    })
+    });
 });
 
-app.post("/students/edit/:sid", (req, res) => {
-  
-});
+app.post(
+  "/students/edit/:sid",
+  [
+    check("name")
+      .isLength({ min: 2 })
+      .withMessage("Student Name should be at least 2 characters"),
+    check("age")
+      .isInt({ gt: 18 })
+      .withMessage("Student Age should be at least 18"),
+  ],
+  (req, res) => {
+    const errors = validationResult(req);
+/**
+ * app.post('/addStudent',
+[
+check("id").isLength({min:1})
+.withMessage("Please enter ID")
+],
+(req, res) => {
+const errors = validationResult(req)
+if (!errors.isEmpty()) {
+res.render("addStudent",
+{errors:errors.errors})
+} else {
+// Further processing on
+ // user supplied data
+}
+})
+body>
+<h1>Add Student</h1>
+<% if (errors != undefined) { %>
+<ul>
+<% errors.forEach((error) => { %>
+<li><%= error.msg %></li>
+<% }) %>
+</ul>
+<% } %>
+<form action="/addStudent" method="POST">
+<label>ID:</label>
+<input type="text" name="id"><br>
+<label>Name</label>
+<input type="text" name="name"><br>
+<label>Course</label>
+<input type="text" name="course"><br>
+<input type="submit" value="OK">
+</form>
+ */
+    const data =
+    {
+      name : req.body.name,
+      age : req.body.age,
+      sid : req.params.sid
+    }
+
+    // if(!errors.isEmpty()){
+    //   return res.render("updateStudent", { student : data, errors: errors.errors})
+    // } else {
+        mySQLDao
+          .updateStudent(data.sid, data.name, data.age)
+          .then(() => {
+            res.redirect("/students");
+          })
+          .catch((error) => {
+            res.send(error);
+          });
+    }
+    
+  //}
+);
 
 app.get("/students/add", (req, res) => {
   res.render("addStudent");
 });
 
 app.post("/students/add", (req, res) => {
-  
+  const data = {
+    sid: req.body.sid,
+    name: req.body.name,
+    age: req.body.age
+  }
+  mySQLDao
+    .addStudent(data.sid, data.name, data.age)
+    .then(() => {
+      res.redirect("/students");
+    })
+    .catch((error) => {
+      res.send(error);
+    })
 });
 
-app.get("/grades", (req, res) => {
-  
-});
+app.get("/grades", (req, res) => {});
 
-app.get("/lecturers", (req, res) => {
-  
-});
+app.get("/lecturers", (req, res) => {});
 
-app.get("/lecturers/delete/:lid", (req, res) => {
-  
-});
+app.get("/lecturers/delete/:lid", (req, res) => {});
 
 /** COMPLETED TASKS
   - run on port 3004
@@ -154,6 +207,29 @@ app.get("/lecturers/delete/:lid", (req, res) => {
               - Student ID, name, age
               - Update option
             - Alphabetical order by student id
+     - GET and POST /students/edit/:sid
+        - Update student page
+        - <h1> Update student
+        - link to home page
+        - 3 inputs 
+          - Student ID (NOT editable)
+          - name (min 2 chars)
+          - age (> 18)
+        - 'add' button
+          - if valid input
+            - redirect to students page
+    - GET and POST /students/add
+        - Add student page
+        - <h1> Add student
+        - Link to home page
+        - 3 input fields
+          - student id
+          - name
+          - age
+        - 'add' button
+         - if valid input
+            - return to students page
     
+
  * 
  */
