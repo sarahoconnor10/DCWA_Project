@@ -44,7 +44,7 @@ var ejs = require("ejs");
 var mySQLDao = require("./mySQLDao");
 var bodyParser = require("body-parser");
 var { check, validationResult } = require("express-validator");
-
+var mongoDao = require("./mongoDao");
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -179,7 +179,15 @@ app.get("/grades", (req, res) => {
     });
 });
 
-app.get("/lecturers", (req, res) => {});
+app.get("/lecturers", (req, res) => {
+  mongoDao.findAll()
+    .then((data) => {
+      res.render("lecturers", {lecturers: data})
+    })
+    .catch((error) => {
+      res.send(error);
+    })
+});
 
 app.get("/lecturers/delete/:lid", (req, res) => {});
 

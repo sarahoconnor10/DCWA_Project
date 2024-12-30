@@ -1,0 +1,20 @@
+<h1>Lecturers</h1>
+<hr>
+<a href="/">Home</a>
+<hr><br>
+<table>
+    <tr>
+        <th>Lecturer ID</th>
+        <th>Name</th>
+        <th>Department ID</th>
+        <th>Action</th>
+    </tr>
+    <% lecturers.forEach((lecturer) => { %>
+    <tr>
+        <td><%= lecturer._id %></td>
+        <td><%= lecturer.name %></td>
+        <td><%= lecturer.did %></td>
+        <td><a href="/lecturers/delete/<%= lecturer.lid %>">Delete</a></td>
+    </tr>
+    <% }) %>
+</table>
