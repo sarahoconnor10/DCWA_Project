@@ -65,8 +65,23 @@ var addStudent = function(sid, name, age) {
             values: [sid, name, age]
         };
         pool.query(myQuery)
-            .then(() => {
-                resolve();
+        .then(() => {
+            resolve();
+        })
+        .catch((error) => {
+            reject(error);
+        })
+    })
+}
+
+var getGrades = function() {
+    return new Promise((resolve, reject) => {
+        var myQuery = {
+            sql: "SELECT IF(s.name IS NULL, '', s.name) AS name, IF(m.name IS NULL, '', m.name) AS module, IF(g.grade IS NULL, '', g.grade) AS grade FROM student s LEFT JOIN grade g ON s.sid = g.sid LEFT JOIN module m ON g.mid = m.mid ORDER BY s.name ASC, g.grade ASC;" 
+        };
+        pool.query(myQuery)
+            .then((data) => {
+                resolve(data);
             })
             .catch((error) => {
                 reject(error);
@@ -74,4 +89,4 @@ var addStudent = function(sid, name, age) {
     })
 }
 
-module.exports = {getStudents, getStudent, updateStudent, addStudent};
+module.exports = {getStudents, getStudent, updateStudent, addStudent, getGrades};

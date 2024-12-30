@@ -16,19 +16,6 @@ TO DO LIST
           - if invalid input
             - page returned with error messages 
             - invalid data is not entered into db
-    - GET /grades
-        - Grades page
-        - <h1> Grades
-        - Link to home page
-        - table display for each student + each module they study
-          - Student name
-          - Module
-          - Grade
-          - if student has no modules 
-            - just display student name + blank cells
-          - displayed in alphabetical order by student name
-            - if a student has > 1 modules
-              - order by ascending grades
     - GET /lecturers
         - lecturers page (mongoDB)
         - <h1> Lecturers
@@ -181,7 +168,16 @@ app.post("/students/add", (req, res) => {
     })
 });
 
-app.get("/grades", (req, res) => {});
+app.get("/grades", (req, res) => {
+  mySQLDao
+    .getGrades()
+    .then((data) => {
+      res.render("grades", { students: data });
+    })
+    .catch((error) => {
+      res.send(error);
+    });
+});
 
 app.get("/lecturers", (req, res) => {});
 
@@ -229,7 +225,19 @@ app.get("/lecturers/delete/:lid", (req, res) => {});
         - 'add' button
          - if valid input
             - return to students page
-    
+    - GET /grades
+        - Grades page
+        - <h1> Grades
+        - Link to home page
+        - table display for each student + each module they study
+          - Student name
+          - Module
+          - Grade
+          - if student has no modules 
+            - just display student name + blank cells
+          - displayed in alphabetical order by student name
+            - if a student has > 1 modules
+              - order by ascending grades
 
  * 
  */
