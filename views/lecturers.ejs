@@ -23,8 +23,9 @@
     <% if (typeof error !== 'undefined' && error) { %>
     <div style="color: red; margin: 10px 0"><%= error %></div>
     <% } %>
+    <a href="/lecturers" <%= typeof error !== 'undefined' && error ? '' : 'hidden' %>>Back to Lecturers</a>
 
-    <table>
+    <table <%= typeof error !== 'undefined' && error ? 'hidden' : '' %>>
       <tr>
         <th>Lecturer ID</th>
         <th>Name</th>
