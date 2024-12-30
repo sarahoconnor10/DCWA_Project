@@ -89,4 +89,20 @@ var getGrades = function() {
     })
 }
 
-module.exports = {getStudents, getStudent, updateStudent, addStudent, getGrades};
+var getLecturerModules = function(id) {
+    return new Promise((resolve, reject) => {
+        var myQuery = {
+            sql: "SELECT * FROM module WHERE lecturer = ?",
+            values: [id]
+        };
+        pool.query(myQuery)
+            .then((data) => {
+                resolve(data);
+            })
+            .catch((error) => {
+                reject(error);
+            })
+    })
+}
+
+module.exports = {getStudents, getStudent, updateStudent, addStudent, getGrades, getLecturerModules};

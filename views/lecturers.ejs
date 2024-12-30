@@ -2,6 +2,13 @@
 <hr>
 <a href="/">Home</a>
 <hr><br>
+
+<% if (typeof error !== 'undefined' && error) { %>
+    <div style="color: red; margin: 10px 0;">
+        <%= error %>
+    </div>
+<% } %>
+
 <table>
     <tr>
         <th>Lecturer ID</th>
@@ -14,7 +21,7 @@
         <td><%= lecturer._id %></td>
         <td><%= lecturer.name %></td>
         <td><%= lecturer.did %></td>
-        <td><a href="/lecturers/delete/<%= lecturer.lid %>">Delete</a></td>
+        <td><a href="/lecturers/delete/<%= lecturer._id %>">Delete</a></td>
     </tr>
     <% }) %>
 </table>

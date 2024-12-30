@@ -21,4 +21,16 @@ MongoClient.connect("mongodb://127.0.0.1:27017")
     })
   }
 
-  module.exports = { findAll }
+  var deleteLecturer = function(id) {
+    return new Promise((resolve, reject) => {
+        coll.deleteOne({_id: id})
+            .then(() => {
+                resolve();
+            })
+            .catch((error) => {
+                reject(error);
+            })
+    })
+  }
+
+  module.exports = { findAll, deleteLecturer}

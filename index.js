@@ -16,16 +16,6 @@ TO DO LIST
           - if invalid input
             - page returned with error messages 
             - invalid data is not entered into db
-    - GET /lecturers
-        - lecturers page (mongoDB)
-        - <h1> Lecturers
-        - Link to home page
-        - table display for each lecturer
-          - Lecturer id
-          - name
-          - department id
-          - action - delete
-          - displayed in alphabetical order by lecturer id
     - GET /lecturers/delete/:lid
         - when 'delete' is clicked on lecturer's page
         - if lecturer does not teach modules
@@ -189,7 +179,30 @@ app.get("/lecturers", (req, res) => {
     })
 });
 
-app.get("/lecturers/delete/:lid", (req, res) => {});
+app.get("/lecturers/delete/:lid", (req, res) => {
+  mySQLDao.getLecturerModules(req.params.lid)
+    .then((result) => {
+      if(result.length !== 0) {
+        //cannot delete, lecturer has correlating modules
+        return res.render("lecturers", {
+          lecturers: [],
+          error: "Cannot delete Lecturer " + req.params.lid + ", as they are teaching " + result.length + " modules."
+        });
+      }
+      else{
+        return mongoDao.deleteLecturer(req.params.lid)
+          .then(() => {
+            mongoDao.findAll()
+            .then((data) => {
+              res.render("lecturers", { lecturers : data});
+            });
+          })
+          .catch((error) => {
+            res.send(error);
+          })
+      }
+    })
+});
 
 /** COMPLETED TASKS
   - run on port 3004
@@ -246,6 +259,15 @@ app.get("/lecturers/delete/:lid", (req, res) => {});
           - displayed in alphabetical order by student name
             - if a student has > 1 modules
               - order by ascending grades
+    - GET /lecturers
+          - lecturers page (mongoDB)
+          - <h1> Lecturers
+          - Link to home page
+          - table display for each lecturer
+            - Lecturer id
+            - name
+            - department id
+            - action - delete
+            - displayed in alphabetical order by lecturer id
 
- * 
  */
