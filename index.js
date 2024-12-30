@@ -65,56 +65,28 @@ app.post(
       .isLength({ min: 2 })
       .withMessage("Student Name should be at least 2 characters"),
     check("age")
-      .isInt({ gt: 18 })
+      .isInt({ gt: 17 })
       .withMessage("Student Age should be at least 18"),
   ],
   (req, res) => {
     const errors = validationResult(req);
-/**
- * app.post('/addStudent',
-[
-check("id").isLength({min:1})
-.withMessage("Please enter ID")
-],
-(req, res) => {
-const errors = validationResult(req)
-if (!errors.isEmpty()) {
-res.render("addStudent",
-{errors:errors.errors})
-} else {
-// Further processing on
- // user supplied data
-}
-})
-body>
-<h1>Add Student</h1>
-<% if (errors != undefined) { %>
-<ul>
-<% errors.forEach((error) => { %>
-<li><%= error.msg %></li>
-<% }) %>
-</ul>
-<% } %>
-<form action="/addStudent" method="POST">
-<label>ID:</label>
-<input type="text" name="id"><br>
-<label>Name</label>
-<input type="text" name="name"><br>
-<label>Course</label>
-<input type="text" name="course"><br>
-<input type="submit" value="OK">
-</form>
- */
-    const data =
-    {
-      name : req.body.name,
-      age : req.body.age,
-      sid : req.params.sid
+    if (!errors.isEmpty()) {
+      return res.render("updateStudent", {
+        student: {
+          sid: req.params.sid,
+          name: req.body.name,
+          age: req.body.age
+        },
+        errors: errors.errors,
+      });
     }
 
-    // if(!errors.isEmpty()){
-    //   return res.render("updateStudent", { student : data, errors: errors.errors})
-    // } else {
+    const data = {
+      sid : req.params.sid,
+      name : req.body.name,
+      age : req.body.age
+    }
+
         mySQLDao
           .updateStudent(data.sid, data.name, data.age)
           .then(() => {
@@ -125,28 +97,56 @@ body>
           });
     }
     
-  //}
 );
 
 app.get("/students/add", (req, res) => {
   res.render("addStudent");
 });
 
-app.post("/students/add", (req, res) => {
-  const data = {
-    sid: req.body.sid,
-    name: req.body.name,
-    age: req.body.age
+app.post(
+  "/students/add",
+  [
+    check("sid")
+      .isLength({ min: 4, max: 4 })
+      .withMessage("Student ID must be 4 characters long")
+      .custom(async (sid) => {
+        const student = await mySQLDao.getStudent(sid);
+        if (student.length > 0) {
+          throw new Error("Student ID must be unique");
+        }
+      }),
+    check("name")
+      .isLength({ min: 2 })
+      .withMessage("Name must be at least 2 characters long"),
+    check("age")
+      .isInt({ gt: 17 })
+      .withMessage("Age must be at least 18"),
+  ],
+  (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.render("addStudent", {
+        errors: errors.errors,
+      });
+    }
+
+    const data = {
+      sid: req.body.sid,
+      name: req.body.name,
+      age: req.body.age,
+    };
+
+    mySQLDao
+      .addStudent(data.sid, data.name, data.age)
+      .then(() => {
+        res.redirect("/students");
+      })
+      .catch((error) => {
+        res.send(error);
+      });
   }
-  mySQLDao
-    .addStudent(data.sid, data.name, data.age)
-    .then(() => {
-      res.redirect("/students");
-    })
-    .catch((error) => {
-      res.send(error);
-    })
-});
+);
 
 app.get("/grades", (req, res) => {
   mySQLDao
