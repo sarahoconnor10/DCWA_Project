@@ -2,20 +2,9 @@
 DCWA PROJECT 2024
 Reqs:
 TO DO LIST
-  - Handle HTTP routes + methods:
-    - GET and POST /students/edit/:sid
-          - if invalid input 
-            - error messages are displayed
-            - invalid data is not entered into db
-    - GET and POST /students/add
-          - validate data
-            - student id length == 4
-            - student id must be unique
-            - name length > 1
-            - age > 18
-          - if invalid input
-            - page returned with error messages 
-            - invalid data is not entered into db   
+- ADD STUDENT:
+  - return with previous input data when showing errors
+  
 */
 
 var express = require("express");
@@ -127,6 +116,11 @@ app.post(
 
     if (!errors.isEmpty()) {
       return res.render("addStudent", {
+        student: {
+          sid: req.params.sid,
+          name: req.body.name,
+          age: req.body.age
+        },
         errors: errors.errors,
       });
     }
@@ -269,5 +263,19 @@ app.get("/lecturers/delete/:lid", (req, res) => {
           - <h1> Error message
           - <h2> cannot delete lecturer <lid>. 
           - do not delete from db  
+    - Handle HTTP routes + methods:
+    - GET and POST /students/edit/:sid
+          - if invalid input 
+            - error messages are displayed
+            - invalid data is not entered into db
+    - GET and POST /students/add
+          - validate data
+            - student id length == 4
+            - student id must be unique
+            - name length > 1
+            - age > 18
+          - if invalid input
+            - page returned with error messages 
+            - invalid data is not entered into db   
 
  */
