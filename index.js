@@ -114,25 +114,22 @@ app.post(
   (req, res) => {
     const errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-      return res.render("addStudent", {
-        student: {
-          sid: req.params.sid,
-          name: req.body.name,
-          age: req.body.age
-        },
-        errors: errors.errors,
-      });
-    }
-
-    const data = {
+    const student = {
       sid: req.body.sid,
       name: req.body.name,
       age: req.body.age,
     };
 
+    if (!errors.isEmpty()) {
+      return res.render("addStudent", {
+        student,
+        errors: errors.errors,
+      });
+    }
+
+
     mySQLDao
-      .addStudent(data.sid, data.name, data.age)
+      .addStudent(student)
       .then(() => {
         res.redirect("/students");
       })

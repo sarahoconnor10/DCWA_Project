@@ -58,11 +58,11 @@ var updateStudent = function(sid, name, age) {
     })
 }
 
-var addStudent = function(sid, name, age) {
+var addStudent = function(student) {
     return new Promise((resolve, reject) => {
         var myQuery = {
             sql: "INSERT INTO student VALUES (?, ?, ?)",
-            values: [sid, name, age]
+            values: [student.sid, student.name, student.age]
         };
         pool.query(myQuery)
         .then(() => {
